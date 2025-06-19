@@ -1,7 +1,7 @@
 # Java-Is-All-You-Need
-By Anjali Godara
-2025-06-18
-For final java project
+### By Anjali Godara
+### 2025-06-18
+### For final java project
 
 1. [Overview](#overview)
 2. [Prerequisites](#prerequisites)
@@ -13,7 +13,7 @@ For final java project
 ## Overview
 JavaIsAllYouNeed is the java implimentation of a transformer based generative language model. It references the paper "Attention Is All You Need". It includes every piece of the pipeline from tokenization and embedding, thought multi-headed self attention and feed forward layers, to an autoregressive LM head written entierly in Java with no external deeplearning frameworks. The models are trained on JSON corpas, and you can use the provided training datasets `TinyTest`, `MediumTest`, `FullTest`, and you can source your very own corpas to train the model on. Training is done on my very simple to use CLI interface that includes both logging and a progress bar. For testing the model you can run a greedy generation on the same CLI menu.
 
-**Importaint Note: **I cleared any training weights from the root project file so the model is completley a blank slate and you MUST train it first before you test it.
+**Importaint Note:** I cleared any training weights from the root project file so the model is completley a blank slate and you MUST train it first before you test it.
 
 ```
 
