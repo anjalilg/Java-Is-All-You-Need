@@ -83,7 +83,7 @@ But really, you can use any JSON formatted corpus to train the model on.
 
 
 ### Testing
-To test, just run ./main again in your terminal and select option 2 to train. 
+To test, just run `./main` again in your terminal and select option 2 to test.
 
 
 ---
