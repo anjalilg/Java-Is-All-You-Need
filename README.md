@@ -52,7 +52,7 @@ Below is a quick reference for where each major Transformer component lives in t
 
 
 ---
-
+```
 ## Directory Structure
 JavaIsAllYouNeed
 ├── data
@@ -128,7 +128,7 @@ JavaIsAllYouNeed
         └── org
             └── anjali
                 └── TransformerEncoderLayerTest.class
-
+```
 33 directories, 41 files
 
 
