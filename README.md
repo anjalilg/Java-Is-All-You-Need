@@ -1,19 +1,54 @@
 # Java-Is-All-You-Need
+By Anjali Godara
+2025-06-18
 For final java project
 
-1. [Prerequisites](#prerequisites)
-2. [Running the Project](#running-the-project)  
-   - [Build](#build)  
-   - [Training Mode](#training-mode)  
-   - [Generation Mode](#generation-mode)  
-   - [Demo Main](#demo-main)
-
-3.  [Java Source Files](#java-source-files)  
-4.  [Directory Structure](#directory-structure)  
+1. [Overview](#overview)
+2. [Prerequisites](#prerequisites)
+3. [Running the Project](#running-the-project)  
+4. [Java Source Files](#java-source-files)  
+5. [Directory Structure](#directory-structure)  
 
 ---
+## Overview
+JavaIsAllYouNeed is the java implimentation of a transformer based generative language model. It references the paper "Attention Is All You Need". It includes every piece of the pipeline from tokenization and embedding, thought multi-headed self attention and feed forward layers, to an autoregressive LM head written entierly in Java with no external deeplearning frameworks. The models are trained on JSON corpas, and you can use the provided training datasets `TinyTest`, `MediumTest`, `FullTest`, and you can source your very own corpas to train the model on. Training is done on my very simple to use CLI interface that includes both logging and a progress bar. For testing the model you can run a greedy generation on the same CLI menu.
+
+```
+
+       ░▒▓█▓▒░░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓██████▓▒░       ░▒▓█▓▒░░▒▓███████▓▒░ 
+       ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░▒▓█▓▒░        
+       ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░▒▓█▓▒░        
+       ░▒▓█▓▒░▒▓████████▓▒░░▒▓█▓▒▒▓█▓▒░░▒▓████████▓▒░      ░▒▓█▓▒░░▒▓██████▓▒░  
+░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░      ░▒▓█▓▒░ 
+░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░      ░▒▓█▓▒░ 
+ ░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░  ░▒▓██▓▒░  ░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░▒▓███████▓▒░
+                                                                                                                                                                                                                                       
+
+ ░▒▓██████▓▒░░▒▓█▓▒░      ░▒▓█▓▒░             ░▒▓█▓▒░░▒▓█▓▒░░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░ 
+░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░             ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
+░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░             ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
+░▒▓████████▓▒░▒▓█▓▒░      ░▒▓█▓▒░              ░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
+░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░                ░▒▓█▓▒░   ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
+░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░                ░▒▓█▓▒░   ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
+░▒▓█▓▒░░▒▓█▓▒░▒▓████████▓▒░▒▓████████▓▒░         ░▒▓█▓▒░    ░▒▓██████▓▒░ ░▒▓██████▓▒░ 
 
 
+░▒▓███████▓▒░░▒▓████████▓▒░▒▓████████▓▒░▒▓███████▓▒░░▒▓█▓▒░ 
+░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░ 
+░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░ 
+░▒▓█▓▒░░▒▓█▓▒░▒▓██████▓▒░ ░▒▓██████▓▒░ ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░ 
+░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░ 
+░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░       
+░▒▓█▓▒░░▒▓█▓▒░▒▓████████▓▒░▒▓████████▓▒░▒▓███████▓▒░░▒▓█▓▒░ 
+
+
+  [1] Train a model
+  [2] Generate text
+  [3] Quit
+
+Select an option [1-3]:
+```
+---
 ## Prerequisites
 
 - **Java 24** (JDK 24)  
@@ -22,7 +57,24 @@ For final java project
 
 ---
 
-### Running The Project
+## Running The Project
+
+To run the project just download the file JavaIsAllYouNeed zip file
+Use a bash terminal (I made this project on archlinux so I just used the linux terminal), and enter into the root directory of the project file
+Run the command ./main
+
+
+### Training
+So there are multiple degrees of training depending on which file you select to train from the data file. The TinyTest train would estimatingly run for 5 minutes, MediumTest could run for estimatingly an hour.
+
+However, to run the FullTest, you must download the FullTest file from this repo, and place it into the /data directory in the root project file. The FullTest data was sourced from multiple wikipedia pages, and will give the most accurate testing responses. I must warn though that the FullTest data is well over 20 gigabytes, and can estimatingly run for multiple training hours. The large file size is the reason why I decided to include it seperatley and optionally from the root project file.
+
+The training weights are automatically saved and updated in the root project file every time you run an epoch.
+
+
+### Testing
+To test, just run ./main again in your terminal and select option 2 to train. 
+
 
 ---
 ## Java Source Files
@@ -52,8 +104,9 @@ Below is a quick reference for where each major Transformer component lives in t
 
 
 ---
-```
+
 ## Directory Structure
+```
 JavaIsAllYouNeed
 ├── data
 │   ├── MediumTest
