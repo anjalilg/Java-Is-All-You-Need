@@ -13,6 +13,8 @@ For final java project
 ## Overview
 JavaIsAllYouNeed is the java implimentation of a transformer based generative language model. It references the paper "Attention Is All You Need". It includes every piece of the pipeline from tokenization and embedding, thought multi-headed self attention and feed forward layers, to an autoregressive LM head written entierly in Java with no external deeplearning frameworks. The models are trained on JSON corpas, and you can use the provided training datasets `TinyTest`, `MediumTest`, `FullTest`, and you can source your very own corpas to train the model on. Training is done on my very simple to use CLI interface that includes both logging and a progress bar. For testing the model you can run a greedy generation on the same CLI menu.
 
+**Importaint Note: **I cleared any training weights from the root project file so the model is completley a blank slate and you MUST train it first before you test it.
+
 ```
 
        ░▒▓█▓▒░░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓██████▓▒░       ░▒▓█▓▒░░▒▓███████▓▒░ 
@@ -59,17 +61,25 @@ Select an option [1-3]:
 
 ## Running The Project
 
-To run the project just download the file JavaIsAllYouNeed zip file
-Use a bash terminal (I made this project on archlinux so I just used the linux terminal), and enter into the root directory of the project file
-Run the command ./main
+1. To run the project just download the file JavaIsAllYouNeed.zip
+2. Use a bash terminal (I made this project on archlinux so I just used the linux terminal), and enter into the root directory of the project file
+3. Run the command `./main`
+
+Running ./main automatically builds the project then gives you a visually usable CLI to train and test the model.
 
 
 ### Training
 So there are multiple degrees of training depending on which file you select to train from the data file. The TinyTest train would estimatingly run for 5 minutes, MediumTest could run for estimatingly an hour.
 
-However, to run the FullTest, you must download the FullTest file from this repo, and place it into the /data directory in the root project file. The FullTest data was sourced from multiple wikipedia pages, and will give the most accurate testing responses. I must warn though that the FullTest data is well over 20 gigabytes, and can estimatingly run for multiple training hours. The large file size is the reason why I decided to include it seperatley and optionally from the root project file.
+There is a third degree of training called FullTest. To use it: 
+1. You must download the file from the following link (https://www.kaggle.com/datasets/ltcmdrdata/plain-text-wikipedia-202011), just press the big 'Download' button then 'Download dataset as zip (8 GB)' 
+2. Place it into the /data directory in the root project file.
 
-The training weights are automatically saved and updated in the root project file every time you run an epoch.
+The FullTest data was sourced from this multiple wikipedia files and converted into JSON files. The FullTest will give the most accurate generative responses during testing. FullTest can estimatingly run for multiple training hours. The large file size + long training hours is the reason why I decided to include it seperatley and optionally from the root project file.
+
+But really, you can use any JSON formatted corpus to train the model on.
+
+**Note:** The training weights are automatically saved and updated in the root project file every time you run an epoch. 
 
 
 ### Testing
