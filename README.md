@@ -1,7 +1,7 @@
 # Java-Is-All-You-Need
 ### By Anjali Godara
 ### 2025-06-18
-### For final java project
+### For summative final program assignment
 
 1. [Overview](#overview)
 2. [Prerequisites](#prerequisites)
