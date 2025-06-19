@@ -44,6 +44,7 @@ This project implements:
 ---
 
 ## Directory Structure
+JavaIsAllYouNeed
 ├── data
 │   ├── MediumTest
 │   │   └── 00c2bfc7-57db-496e-9d5c-d62f8d8119e3.json
@@ -119,3 +120,76 @@ This project implements:
                 └── TransformerEncoderLayerTest.class
 
 33 directories, 41 files
+
+## Java Source Files
+
+### 1. Overall Architecture  
+![image](https://github.com/user-attachments/assets/752db052-0c4c-4bb1-ab3c-8a5ff486ffa8)
+
+- **TransformerEncoderLayer.java** ties together self-attention, residuals & layer norms, and feed-forward blocks exactly as in Sections 3.1–3.4 of Vaswani et al. :contentReference[oaicite:2]{index=2}.
+
+---
+
+### 2. Scaled Dot-Product & Multi-Head Attention  
+- **Section 3.2:**  
+  > “Scaled dot-product attention” computes  
+  > \[ \text{Attention}(Q,K,V)=\text{softmax}(\frac{QK^T}{\sqrt{d_k}}) V \]  
+  > Multi-head attention runs this in parallel heads. :contentReference[oaicite:3]{index=3}  
+- **Mapping:**  
+  - `MultiHeadAttention.java`  
+    - Projects inputs into Q, K, V (via four `Linear` layers).  
+    - Splits into `numHeads`, applies scaled dot-product, concatenates, and final projection.  
+
+---
+
+### 3. Position-Wise Feed-Forward Networks  
+- **Section 3.3:**  
+  > Two linear layers with ReLU in between (applied independently to each position). :contentReference[oaicite:4]{index=4}  
+- **Mapping:**  
+  - `FeedForward.java` implements exactly that:  
+    1. `Linear(embedDim→hiddenDim)` + ReLU  
+    2. `Linear(hiddenDim→embedDim)`
+
+---
+
+### 4. Residual Connections & Layer Normalization  
+- **Section 3.1 & 3.4:**  
+  > “Each sub-layer is surrounded by a residual connection followed by layer normalization.” :contentReference[oaicite:5]{index=5}  
+- **Mapping:**  
+  - `TransformerEncoderLayer.java` calls `add(...)` for residuals, then `LayerNorm.forward(...)`.  
+
+---
+
+### 5. Autoregressive Generation  
+- **Greedy Decoding:**  
+  > After training, we generate one token at a time by picking the highest-probability next token. This style of autoregressive generation builds on early seq2seq work :contentReference[oaicite:6]{index=6}.  
+- **Mapping:**  
+  - `LanguageModel.java`:  
+    - `encodePrompt(...)` to get initial `[<BOS>, …]`  
+    - Loop until `<EOS>` or maxLen: embed → encoder stack → `LMHead.forward(...)` → argmax → append.  
+    - `decodeAll(...)` converts IDs back to tokens.
+
+---
+
+### 🔧 Java Source Files
+
+Below is a quick reference for where each major Transformer component lives in the code:
+
+| Paper Concept                                | Java Class                           |
+|----------------------------------------------|--------------------------------------|
+| Tokenization & Special Tokens                | `Tokenizer.java`                     |
+| Embedding Look-Up                            | `Embedding.java`                     |
+| Scaled Dot-Product + Multi-Head Attention    | `MultiHeadAttention.java`            |
+| Position-Wise Feed-Forward                   | `FeedForward.java`                   |
+| Layer Normalization                          | `LayerNorm.java`                     |
+| Residual + Sublayer Composition              | `TransformerEncoderLayer.java`       |
+| Final LM Head Projection                     | `LMHead.java`                        |
+| Full Model + Greedy Generation               | `LanguageModel.java`                 |
+| Training Loop / Teacher-Forcing + Progress   | `CorpusTrainer.java`                 |
+| CLI Entry-Point (`train` / `gen` modes)      | `GenAIApp.java`                      |
+| Minimal demo of a single encoder layer       | `Main.java`                          |
+
+
+---
+
+
