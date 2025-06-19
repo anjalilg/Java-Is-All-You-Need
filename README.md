@@ -89,7 +89,6 @@ To test, just run `./main` again in your terminal and select option 2 to test.
 ---
 ## Java Source Files
 
-### Overall Architecture  
 ![image](https://github.com/user-attachments/assets/752db052-0c4c-4bb1-ab3c-8a5ff486ffa8)
 
 I used the transformer archetecture from the paper Attention Is All You Need to build this project: https://arxiv.org/abs/1706.03762
